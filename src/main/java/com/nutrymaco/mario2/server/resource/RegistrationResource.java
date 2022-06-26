@@ -28,13 +28,15 @@ public class RegistrationResource {
 
     @PATCH
     @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     @Path("/rooms/{roomName}")
-    public void registerUserInRoom(@PathParam("roomName") String roomName, Player player) {
+    public Room registerUserInRoom(@PathParam("roomName") String roomName, Player player) {
         if (roomRepository.getRooms().stream().map(Room::name).noneMatch(roomName::equals)) {
             registrationService.createRoom(roomName);
         }
         registrationService.registerPlayerInRoom(roomName, player);
         System.out.println(registrationService.getRooms());
+        return roomRepository.getRoomByName(roomName);
     }
 
 //    @POST

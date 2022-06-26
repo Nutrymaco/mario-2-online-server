@@ -15,15 +15,16 @@ public class LevelGenerator {
 
 
     public String[] generateLevel() {
-        var level = IntStream.range(0, DEFAULT_HEIGHT)
+        var level = IntStream.rangeClosed(0, DEFAULT_HEIGHT)
                 .mapToObj(ignored -> " ".repeat(DEFAULT_WIDTH))
                 .toArray(String[]::new);
-        for (int i = 0; i < DEFAULT_HEIGHT; i += 6) {
-            int blockSize = random.nextInt(3);
+        for (int i = 0; i <= DEFAULT_HEIGHT; i += 6) {
+            int blockSize = (random.nextInt(3) + 1) % 3;
             int blockStart = random.nextInt(0, DEFAULT_WIDTH - blockSize);
             String curLevel = level[i];
             level[i] = curLevel.substring(0, blockStart) + "-".repeat(blockSize) + curLevel.substring(blockStart);
         }
+        level[level.length - 1] = "-".repeat(DEFAULT_WIDTH);
         return level;
     }
 

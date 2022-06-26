@@ -72,8 +72,14 @@ public class SocketResource {
             long maxLag = lagService.getMaxLagForRoom(registrationService.getPlayerRoom(playerName).name());
             long start = System.currentTimeMillis() + maxLag;
             var outMessage = new BaseOutMessage(playerName, DISABLE_BLOCK, new DisableBlockMessage(start, 2_000));
+            var playerNames = registrationService.getPlayerRoom(playerName).players().stream()
+                    .map(Player::name)
+                    .toList();
             System.out.println(outMessage);
-            broadcast(objectMapper.writeValueAsString(outMessage));
+            sessions.entrySet().stream()
+                    .filter(entry -> playerNames.contains(entry.getKey()))
+                    .map(Map.Entry::getValue)
+                    .forEach(sendMessage(objectMapper.writeValueAsString(outMessage)));
         } else {
             throw new IllegalArgumentException();
         }
