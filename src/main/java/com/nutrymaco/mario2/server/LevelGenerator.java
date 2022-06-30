@@ -11,6 +11,7 @@ public class LevelGenerator {
 
     private static final int DEFAULT_HEIGHT = 150;
     private static final int DEFAULT_WIDTH = 40;
+    private static final int MAX_BLOCK_SIZE = 3;
     private static final Random random = new Random();
 
 
@@ -19,8 +20,8 @@ public class LevelGenerator {
                 .mapToObj(ignored -> " ".repeat(DEFAULT_WIDTH))
                 .toArray(String[]::new);
         for (int i = 0; i <= DEFAULT_HEIGHT; i += 6) {
-            int blockSize = (random.nextInt(3) + 1) % 3;
-            int blockStart = random.nextInt(0, DEFAULT_WIDTH - blockSize);
+            int blockSize = (random.nextInt(MAX_BLOCK_SIZE - 1) + 1) % MAX_BLOCK_SIZE;
+            int blockStart = random.nextInt(DEFAULT_WIDTH - blockSize);
             String curLevel = level[i];
             level[i] = curLevel.substring(0, blockStart) + "-".repeat(blockSize) + curLevel.substring(blockStart);
         }
