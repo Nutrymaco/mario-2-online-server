@@ -1,0 +1,10 @@
+[Unit]
+Description=webserver Daemon
+Requires=nginx.service
+
+[Service]
+ExecStart=java -jar /root/target/quarkus-app/quarkus-run.jar
+User=root
+
+[Install]
+WantedBy=multi-user.target
