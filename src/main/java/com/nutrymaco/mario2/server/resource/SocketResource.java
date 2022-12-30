@@ -15,9 +15,11 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static com.nutrymaco.mario2.server.model.in.message.MessageType.*;
 
@@ -59,30 +61,34 @@ public class SocketResource {
         if (POSITION.equals(message.type())) {
             var position = message.data();
             var outMessage = new BaseOutMessage(playerName, POSITION, position);
-            var room = registrationService.getPlayerRoom(playerName);
-            var otherPlayerNames = room.players().stream()
-                    .map(Player::name)
-                    .filter(name -> !playerName.equals(name))
-                    .toList();
-            sessions.entrySet().stream()
-                    .filter(entry -> otherPlayerNames.contains(entry.getKey()))
-                    .map(Map.Entry::getValue)
-                    .forEach(sendMessage(objectMapper.writeValueAsString(outMessage)));
+            var otherPlayerNames = getOtherPlayerNames(playerName).toList();
+            sendToPlayers(outMessage, otherPlayerNames);
         } else if (DISABLE_BLOCK.equals(message.type())) {
             long maxLag = lagService.getMaxLagForRoom(registrationService.getPlayerRoom(playerName).name());
             long start = System.currentTimeMillis() + maxLag;
             var outMessage = new BaseOutMessage(playerName, DISABLE_BLOCK, new DisableBlockMessage(start, 2_000));
-            var playerNames = registrationService.getPlayerRoom(playerName).players().stream()
-                    .map(Player::name)
-                    .toList();
+            var playerNames = getOtherPlayerNames(playerName).toList();
             System.out.println(outMessage);
-            sessions.entrySet().stream()
-                    .filter(entry -> playerNames.contains(entry.getKey()))
-                    .map(Map.Entry::getValue)
-                    .forEach(sendMessage(objectMapper.writeValueAsString(outMessage)));
+            sendToPlayers(outMessage, playerNames);
         } else {
-            throw new IllegalArgumentException();
+            System.out.println("unknown message type");
+            var outMessage = new BaseOutMessage(playerName, message.type(), message.data());
+            sendToPlayers(outMessage, getOtherPlayerNames(playerName).toList());
         }
+    }
+
+    private void sendToPlayers(BaseOutMessage outMessage, List<String> playerNames) throws JsonProcessingException {
+        String message = objectMapper.writeValueAsString(outMessage);
+        sessions.entrySet().stream()
+                .filter(entry -> playerNames.contains(entry.getKey()))
+                .map(Map.Entry::getValue)
+                .forEach(sendMessage(message));
+    }
+
+    private Stream<String> getOtherPlayerNames(String playerName) {
+        return registrationService.getPlayerRoom(playerName).players().stream()
+                .map(Player::name)
+                .filter(playerToSend -> !playerToSend.equals(playerName));
     }
 
     private void broadcast(String message) {
