@@ -12,6 +12,7 @@ import javax.ws.rs.*;
 import java.util.Collection;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
 @ApplicationScoped
 @Path("")
@@ -57,6 +58,13 @@ public class RegistrationResource {
     @Produces(APPLICATION_JSON)
     public Collection<Player> getUsers(@PathParam("roomName") String roomName) {
         return roomRepository.getRoomByName(roomName).players();
+    }
+
+    @GET
+    @Path("/test")
+    @Produces(TEXT_PLAIN)
+    public String test() {
+        return "test";
     }
 
 }
