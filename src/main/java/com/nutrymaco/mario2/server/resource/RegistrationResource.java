@@ -47,12 +47,14 @@ public class RegistrationResource {
 
     @GET
     @Path("/rooms")
+    @Produces(APPLICATION_JSON)
     public Collection<Room> getRooms() {
         return registrationService.getRooms();
     }
 
     @GET
     @Path("/rooms/{roomName}/users")
+    @Produces(APPLICATION_JSON)
     public Collection<Player> getUsers(@PathParam("roomName") String roomName) {
         return roomRepository.getRoomByName(roomName).players();
     }
