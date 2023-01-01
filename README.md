@@ -1,4 +1,4 @@
-# mario-2-server Project 
+# mario-2-server Project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
