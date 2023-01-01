@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name ${SERVER_API};
+    server_name <<SERVER_IP>>
 
     location / {
         proxy_set_header   X-Forwarded-For $remote_addr;
