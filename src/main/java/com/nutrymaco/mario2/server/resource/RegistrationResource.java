@@ -64,7 +64,7 @@ public class RegistrationResource {
     @Path("/test")
     @Produces(TEXT_PLAIN)
     public String test() {
-        return "test123";
+        return "test123123";
     }
 
 }
