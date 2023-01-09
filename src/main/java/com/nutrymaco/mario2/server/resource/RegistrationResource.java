@@ -40,11 +40,11 @@ public class RegistrationResource {
         return roomRepository.getRoomByName(roomName);
     }
 
-//    @POST
-//    @Path("/rooms")
-//    public Room createRoom(Room room) {
-//        return registrationService.createRoom(room);
-//    }
+    @POST
+    @Path("/rooms")
+    public Room createRoom(Room room) {
+        return registrationService.createRoom(room);
+    }
 
     @GET
     @Path("/rooms")
