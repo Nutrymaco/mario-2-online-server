@@ -41,6 +41,7 @@ public class RegistrationResource {
     }
 
     @POST
+    @Produces(APPLICATION_JSON)
     @Path("/rooms")
     public Room createRoom(Room room) {
         return registrationService.createRoom(room);
