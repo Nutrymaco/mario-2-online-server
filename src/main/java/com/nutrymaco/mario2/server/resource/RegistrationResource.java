@@ -41,10 +41,15 @@ public class RegistrationResource {
     }
 
     @POST
-    @Produces(APPLICATION_JSON)
     @Path("/rooms")
+    @Produces(APPLICATION_JSON)
     public Room createRoom(Room room) {
-        return registrationService.createRoom(room);
+        registrationService.createRoom(room.name());
+        room.players().forEach(player -> registrationService.registerPlayerInRoom(room.name(), player));
+        return registrationService.getRooms().stream()
+                .filter(r -> r.name().equals(room.name()))
+                .findFirst()
+                .orElseThrow();
     }
 
     @GET
