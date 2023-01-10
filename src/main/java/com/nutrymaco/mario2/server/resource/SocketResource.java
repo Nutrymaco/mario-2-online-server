@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 import static com.nutrymaco.mario2.server.model.in.message.MessageType.*;
 
-@ServerEndpoint("/socket/{playerName}")
+@ServerEndpoint("/socket/{playerId}")
 @ApplicationScoped
 public class SocketResource {
 
