@@ -26,7 +26,7 @@ public class LevelResource {
     @Consumes(MULTIPART_FORM_DATA)
     @Produces(APPLICATION_JSON)
     public Map<String, UUID> createLevel(MultipartFormDataInput formData) throws IOException {
-        File levelFile = formData.getFormDataPart("file", new GenericType<>(File.class));
+        File levelFile = formData.getFormDataPart("content", new GenericType<>(File.class));
         String levelData = Files.readString(levelFile.toPath());
         String levelName = formData.getFormDataPart("name", new GenericType<>(String.class));
         Boolean isDefault = formData.getFormDataPart("default", new GenericType<>(boolean.class));
