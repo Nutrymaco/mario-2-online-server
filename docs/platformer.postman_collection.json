@@ -33,7 +33,7 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "file",
+							"key": "content",
 							"type": "file",
 							"src": "/Users/smykovefim/Downloads/4.html"
 						},
@@ -144,11 +144,8 @@
 		},
 		{
 			"name": "create room with specified level id",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
