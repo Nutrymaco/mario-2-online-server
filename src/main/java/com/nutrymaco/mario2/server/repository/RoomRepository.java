@@ -4,26 +4,24 @@ import com.nutrymaco.mario2.server.model.Player;
 import com.nutrymaco.mario2.server.model.Room;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.UUID;
 
 public interface RoomRepository {
 
-    void addRoom(Room room);
+    String addRoom(Set<UUID> players, UUID levelId);
 
-    Room getRoomByName(String roomName);
+    RoomModificator modifyRoom(String roomId);
 
-    RoomModificator modifyRoom(String roomName);
+    Set<UUID> playersInRoom(String roomId);
 
-    Room getRoomByPlayerName(String playerName);
-
-    Collection<Room> getRooms();
+    Collection<?> getRooms();
 
     interface RoomModificator {
 
-        void updateName(String newName);
+        void addPlayer(UUID playerId);
 
-        void addPlayer(Player player);
-
-        void removePlayer(Player player);
+        void removePlayer(UUID playerId);
 
     }
 
